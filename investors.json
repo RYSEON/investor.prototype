@@ -1,3 +1,7 @@
 [
-  { "id": "ivan", "name": "Ivan (test)" }
+  { "id": "test", "name": "Ivan Ilečić (test)" },
+  { "id": "hrvoje", "name": "Hrvoje" },
+  { "id": "ivan", "name": "Ivan (investor)" },
+  { "id": "marin", "name": "Marin" },
+  { "id": "marko", "name": "Marko" }
 ]
