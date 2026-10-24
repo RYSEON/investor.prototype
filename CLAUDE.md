@@ -18,9 +18,14 @@ What lives here (and only here):
   PostHog events: `app_open`, `screen_view` (hooked on `window.ryseOnEnter`, English screen names from the source markup),
   `tab_switch`, `settings_open` / `settings_page`, `demo_profile_opened`, `app_resume`, `session_end` (seconds visible),
   plus autocapture of taps. If the source build changes shape the script stops with a clear error instead of guessing.
-- `icons/` — investor Home Screen icon (blue RY, Ivan 24 Oct); replaces the source icons only on this link.
+- `icons/` — investor Home Screen icon (black R, Ivan 24 Oct); replaces the source icons only on this link.
 - `assets/preview-player.jpg` + `preview_photo` in config — if a player skips the profile photo (or reaches Home
   without one), this photo is added through the app's own photo input with the message "Photo added for preview".
+- `install_guide` + `assets/guide/` — welcome screen in a phone browser (never in the Home Screen app): "Which phone?"
+  iPhone / Android, then the three Add to Home Screen steps on one screen; "Continue in browser" is remembered. On a
+  computer it shows the investor's QR code (`qr/<id>.png`, generated in the build with `qrcode`). Events: guide_shown,
+  guide_os, guide_closed. Branded QR cards for Ivan (RYSEON-QR-<id>.png, R icon in the middle, error correction H) are
+  made on request and checked with OpenCV's QR decoder before sending.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
 Never put analytics or investor code into the source repo. Talk to Ivan in Croatian; he is not a developer — do all
