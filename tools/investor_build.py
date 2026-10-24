@@ -173,6 +173,105 @@ if cfg.get("preview_photo") and (ROOT / "assets/preview-player.jpg").is_file():
 </script>
 """ % pname + tail
 
+# ---- 3e. welcome / Add to Home Screen guide (Ivan, 24 Oct) -----------------
+# Opened in a phone browser (not yet from the Home Screen): ask iPhone or Android, show the three steps on one screen,
+# and let the investor choose to add it or continue in the browser. On a computer: show their QR code to scan instead.
+# Never shown inside the Home Screen app. "Continue in browser" is remembered on that device.
+if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
+    shutil.copytree(ROOT / "assets/guide", out / "guide")
+    qr_ok = False
+    try:
+        import qrcode
+        (out / "qr").mkdir(exist_ok=True)
+        base = cfg.get("public_url", "").rstrip("/")
+        for i in known:
+            q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=2)
+            q.add_data(base + "/?r=" + i); q.make(fit=True)
+            q.make_image(fill_color="black", back_color="white").save(out / "qr" / (i + ".png"))
+        qr_ok = True
+    except ImportError:
+        print("qrcode not installed - desktop QR skipped")
+    names_short = {k: re.sub(r"\s*\(.*?\)\s*", "", v).split(" ")[0] for k, v in known.items()}
+    guide_html = """<style>
+#rg{position:fixed;inset:0;z-index:2147483000;display:none;background:rgba(3,5,10,.88);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
+  font-family:var(--font-body,Manrope,-apple-system,sans-serif);color:#F5F7FB;-webkit-user-select:none;user-select:none;opacity:0;transition:opacity .35s ease}
+#rg.on{display:block}#rg.in{opacity:1}
+#rg .w{position:absolute;inset:0;margin:0 auto;max-width:430px;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 34px) 24px calc(env(safe-area-inset-bottom) + 22px);overflow-y:auto}
+#rg .pg{display:none;flex:1;flex-direction:column}#rg .pg.on{display:flex;animation:rgIn .45s cubic-bezier(.2,.7,.2,1)}
+@keyframes rgIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+#rg .bd{font-family:var(--font-display,Archivo,sans-serif);font-weight:700;font-size:13px;letter-spacing:.26em}#rg .bd span{color:#7D8698}
+#rg h2{font-family:var(--font-display,Archivo,sans-serif);font-weight:600;font-size:34px;line-height:1.08;letter-spacing:-.01em;margin:44px 0 0}
+#rg p{font-size:16px;line-height:1.5;color:#B8C0CF;margin:14px 0 0}
+#rg .lb{font-size:13px;letter-spacing:.14em;text-transform:uppercase;color:#7D8698;margin:auto 0 14px}
+#rg .os{display:flex;gap:12px}
+#rg .ob{flex:1;height:108px;border-radius:18px;border:1px solid rgba(255,255,255,.1);background:rgba(255,255,255,.04);color:#F5F7FB;font:600 17px var(--font-body,Manrope,sans-serif);
+  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;cursor:pointer}
+#rg .ob:active{border-color:#2F6BFF;background:rgba(47,107,255,.12)}
+#rg .ob svg{width:26px;height:26px}
+#rg .lk{background:none;border:0;color:#9AA4B6;font:500 15px var(--font-body,Manrope,sans-serif);padding:18px 0 4px;cursor:pointer;align-self:center}
+#rg .bk{background:none;border:0;color:#F5F7FB;padding:0;width:36px;height:36px;margin:-6px 0 0 -8px;cursor:pointer}
+#rg .st{display:flex;gap:10px;margin-top:26px}
+#rg .st div{flex:1;text-align:center}
+#rg .st img{width:100%;height:auto;display:block}
+#rg .st .n{width:24px;height:24px;border-radius:50%;border:1px solid #2F6BFF;color:#8FB0FF;font:600 12px var(--font-display,Archivo,sans-serif);display:grid;place-items:center;margin:0 auto 10px}
+#rg .st em{display:block;font-style:normal;font-size:12.5px;line-height:1.38;color:#9AA4B6;margin-top:12px}
+#rg .st b{color:#F5F7FB;font-weight:600}
+#rg .nt{font-size:12.5px;line-height:1.45;color:#7D8698;margin-top:18px}
+#rg .pb{margin-top:auto;height:56px;border-radius:16px;border:0;background:#F5F7FB;color:#03050A;font:600 16px var(--font-body,Manrope,sans-serif);cursor:pointer}
+#rg .qr{margin:34px auto 0;width:220px;height:220px;border-radius:22px;background:#fff;padding:14px}#rg .qr img{width:100%;height:100%;display:block}
+</style>
+<div id="rg" aria-modal="true" role="dialog"><div class="w">
+ <div class="pg" data-p="hi"><div class="bd">RYSE<span>ON</span></div>
+  <h2 data-h>Welcome.</h2>
+  <p>For the best experience, add RYSEON to your Home Screen. It opens full screen, just like the real app.</p>
+  <div class="lb">Which phone are you using?</div>
+  <div class="os"><button class="ob" type="button" data-os="ios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 5h3"/></svg>iPhone</button>
+   <button class="ob" type="button" data-os="android"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><circle cx="12" cy="5.2" r=".6" fill="currentColor"/></svg>Android</button></div>
+  <button class="lk" type="button" data-x="browser">Continue in browser</button></div>
+ <div class="pg" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h2 style="margin-top:22px">Add to Home Screen</h2><p>iPhone · Safari · three taps</p>
+  <div class="st"><div><div class="n">1</div><img src="guide/ios-1.png" alt=""><em>Tap <b>•••</b> next to the address bar</em></div>
+   <div><div class="n">2</div><img src="guide/ios-2.png" alt=""><em>Tap <b>Share</b>, then <b>Add to Home Screen</b></em></div>
+   <div><div class="n">3</div><img src="guide/ios-3.png" alt=""><em>Keep <b>Open as Web App</b> on, tap <b>Add</b></em></div></div>
+  <div class="nt">Older iPhone? Tap the Share button at the bottom of Safari, then Add to Home Screen. Then open RYSEON from your Home Screen.</div>
+  <button class="pb" type="button" data-x="got">Got it, I'll add it</button><button class="lk" type="button" data-x="browser">Continue in browser</button></div>
+ <div class="pg" data-p="android"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h2 style="margin-top:22px">Add to Home Screen</h2><p>Android · Chrome · three taps</p>
+  <div class="st"><div><div class="n">1</div><img src="guide/android-1.png" alt=""><em>Tap <b>⋮</b> at the top right</em></div>
+   <div><div class="n">2</div><img src="guide/android-2.png" alt=""><em>Tap <b>Add to Home screen</b> or <b>Install app</b></em></div>
+   <div><div class="n">3</div><img src="guide/android-3.png" alt=""><em>Tap <b>Install</b></em></div></div>
+  <div class="nt">Samsung Internet? Menu at the bottom, then Add page to, Home screen. Then open RYSEON from your Home Screen.</div>
+  <button class="pb" type="button" data-x="got">Got it, I'll add it</button><button class="lk" type="button" data-x="browser">Continue in browser</button></div>
+ <div class="pg" data-p="desk"><div class="bd">RYSE<span>ON</span></div>
+  <h2 data-h>Welcome.</h2><p>RYSEON is made for your phone. Scan this code with your phone's camera to open your personal preview there.</p>
+  <div class="qr" data-qr><img alt="QR code" data-qri></div>
+  <button class="pb" type="button" data-x="browser" style="margin-top:auto;background:transparent;color:#F5F7FB;border:1px solid rgba(255,255,255,.16)">Continue on this computer</button></div>
+</div></div>
+<script>
+(function(){ var NM=__NM__, QR=__QR__, R=window.__ryseR;
+  try{ if(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)) return }catch(e){ return }
+  try{ if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){}
+  var ua=navigator.userAgent||'', mobile=/iPhone|iPad|iPod|Android/i.test(ua)||(navigator.maxTouchPoints>1&&Math.min(screen.width,screen.height)<900);
+  if(!mobile&&!(QR&&R&&NM[R])) return;
+  var g=document.getElementById('rg'); if(!g) return;
+  function ev(n,p){ try{ window.posthog&&window.posthog.capture&&window.posthog.capture(n,p||{}) }catch(e){} }
+  var nm=R&&NM[R]; g.querySelectorAll('[data-h]').forEach(function(h){ h.textContent=nm?('Welcome, '+nm+'.'):'Welcome.' });
+  function show(p){ g.querySelectorAll('.pg').forEach(function(x){ x.classList.toggle('on',x.dataset.p===p) }); g.querySelector('.w').scrollTop=0 }
+  function close(how){ g.classList.remove('in'); setTimeout(function(){ g.classList.remove('on') },350); ev('guide_closed',{action:how});
+    if(how==='browser'){ try{ localStorage.setItem('ryseon-guide','browser') }catch(e){} } }
+  g.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return;
+    if(b.dataset.os){ show(b.dataset.os); ev('guide_os',{os:b.dataset.os}) }
+    else if(b.dataset.to) show(b.dataset.to);
+    else if(b.dataset.x) close(b.dataset.x) });
+  function open(){ if(!mobile){ g.querySelector('[data-qri]').src='qr/'+R+'.png'; show('desk') } else show('hi');
+    g.classList.add('on'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ g.classList.add('in') }) }); ev('guide_shown',{device:mobile?'phone':'computer'}) }
+  if(document.readyState==='complete') setTimeout(open,1400); else addEventListener('load',function(){ setTimeout(open,1400) });
+})();
+</script>
+"""
+    guide_html = guide_html.replace("__NM__", json.dumps(names_short)).replace("__QR__", "true" if qr_ok else "false")
+    tail = guide_html + tail
+
 doc = replace_once(doc, "\n</body>\n</html>\n", "\n" + tail + "</body>\n</html>\n")
 (out / "index.html").write_text(doc)
 (out / ".nojekyll").write_text("")

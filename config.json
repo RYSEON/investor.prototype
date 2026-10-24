@@ -5,5 +5,7 @@
   "posthog_host": "https://eu.i.posthog.com",
   "session_replay": false,
   "hide_preview_helpers": true,
-  "preview_photo": true
+  "preview_photo": true,
+  "install_guide": true,
+  "public_url": "https://ryseon.github.io/investor.prototype"
 }
