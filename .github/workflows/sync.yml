@@ -43,7 +43,7 @@ jobs:
       - name: Anything new?
         id: check
         run: |
-          H=$( { (cd _source && find src build.py manifest.webmanifest robots.txt icon-*.png media -type f -print0 2>/dev/null | sort -z | xargs -0 sha256sum); sha256sum config.json investors.json tools/investor_build.py vendor/posthog.js icons/*.png; } | sha256sum | cut -c1-16)
+          H=$( { (cd _source && find src build.py manifest.webmanifest robots.txt icon-*.png media -type f -print0 2>/dev/null | sort -z | xargs -0 sha256sum); sha256sum config.json investors.json tools/investor_build.py vendor/posthog.js icons/*.png assets/*; } | sha256sum | cut -c1-16)
           OLD=""
           if git fetch -q --depth 1 origin gh-pages 2>/dev/null; then OLD=$(git show FETCH_HEAD:.source-hash 2>/dev/null || true); fi
           echo "hash=$H" >> "$GITHUB_OUTPUT"

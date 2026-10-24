@@ -145,6 +145,34 @@ if cfg.get("hide_preview_helpers"):
 if css:
     tail = "<style>%s</style>\n" % css + tail
 
+# preview photo (Ivan, 24 Oct): a player who skips the profile photo (or never sees that screen, e.g. the pro path) gets
+# assets/preview-player.jpg, with a short "Photo added for preview" message. Uses the app's own photo input, so the
+# avatar, buttons and saved profile behave exactly as if the photo had been chosen.
+if cfg.get("preview_photo") and (ROOT / "assets/preview-player.jpg").is_file():
+    pb = (ROOT / "assets/preview-player.jpg").read_bytes()
+    pname = "preview-player.jpg?v=" + hashlib.sha1(pb).hexdigest()[:8]
+    (out / "preview-player.jpg").write_bytes(pb)
+    tail = """<script>
+(function(){ var SRC='%s', MSG='Photo added for preview', data=null;
+  function P(){ return window.ryseProfile||{} }
+  try{ fetch(SRC).then(function(r){return r.blob()}).then(function(b){ var fr=new FileReader(); fr.onload=function(){ data=fr.result }; fr.readAsDataURL(b) }) }catch(e){}
+  function note(){ var t=document.getElementById('toast'); if(!t) return;
+    t.innerHTML='<span class="ti"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.8 8.3 2.7 2.7 5.7-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span></span>';
+    t.lastChild.textContent=MSG; t.classList.remove('on','off'); void t.offsetWidth; t.classList.add('on');
+    setTimeout(function(){ t.classList.remove('on'); t.classList.add('off'); setTimeout(function(){ t.classList.remove('off') },500) },2800) }
+  function direct(){ if(!data) return false; var p=P(); p.photo=data; try{ if(p.first) localStorage.setItem('ryse-last-profile',JSON.stringify(p)) }catch(e){} return true }
+  /* "Skip for now" on the photo screen: put the preview photo in through the app's own photo input */
+  document.addEventListener('click',function(e){ var b=e.target&&e.target.closest&&e.target.closest('#photo-skip'); if(!b||!b.dataset.go||P().photo) return;
+    var inp=document.getElementById('photo-lib'), ok=false;
+    try{ if(data&&inp&&window.DataTransfer){ var bin=atob(data.split(',')[1]), u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i);
+      var dt=new DataTransfer(); dt.items.add(new File([u],'preview.jpg',{type:'image/jpeg'})); inp.files=dt.files; inp.dispatchEvent(new Event('change',{bubbles:true})); ok=true } }catch(err){}
+    if(!ok) ok=direct(); if(ok) setTimeout(note,700) },true);
+  /* any path that reaches the app without a photo */
+  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ var n=false; try{ if(to&&to.id==='s17'&&!P().photo) n=direct() }catch(e){} var r=prev?prev.apply(this,arguments):undefined; if(n) setTimeout(note,900); return r };
+})();
+</script>
+""" % pname + tail
+
 doc = replace_once(doc, "\n</body>\n</html>\n", "\n" + tail + "</body>\n</html>\n")
 (out / "index.html").write_text(doc)
 (out / ".nojekyll").write_text("")

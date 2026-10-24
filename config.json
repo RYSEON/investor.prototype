@@ -4,5 +4,6 @@
   "posthog_key": "phc_zLmRbkwdgbuERjSmiUahPgLDWKh6z2kjZYwtkhucKXRV",
   "posthog_host": "https://eu.i.posthog.com",
   "session_replay": false,
-  "hide_preview_helpers": true
+  "hide_preview_helpers": true,
+  "preview_photo": true
 }
