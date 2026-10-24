@@ -18,6 +18,9 @@ What lives here (and only here):
   PostHog events: `app_open`, `screen_view` (hooked on `window.ryseOnEnter`, English screen names from the source markup),
   `tab_switch`, `settings_open` / `settings_page`, `demo_profile_opened`, `app_resume`, `session_end` (seconds visible),
   plus autocapture of taps. If the source build changes shape the script stops with a clear error instead of guessing.
+- `icons/` — investor Home Screen icon (blue RY, Ivan 24 Oct); replaces the source icons only on this link.
+- `assets/preview-player.jpg` + `preview_photo` in config — if a player skips the profile photo (or reaches Home
+  without one), this photo is added through the app's own photo input with the message "Photo added for preview".
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
 Never put analytics or investor code into the source repo. Talk to Ivan in Croatian; he is not a developer — do all
