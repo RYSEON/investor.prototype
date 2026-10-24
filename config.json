@@ -4,5 +4,5 @@
   "posthog_key": "",
   "posthog_host": "https://eu.i.posthog.com",
   "session_replay": false,
-  "hide_preview_helpers": false
+  "hide_preview_helpers": true
 }
