@@ -68,6 +68,16 @@ doc = replace_once(doc, '<link rel="manifest" href="manifest.webmanifest">', hea
 doc = replace_once(doc, "location.replace(location.pathname+'?v='+",
                    "location.replace(location.pathname+(window.__ryseR?'?r='+encodeURIComponent(window.__ryseR)+'&':'?')+'v='+", count=2)
 
+# investor icon (Ivan, 24 Oct): icons/ in this repo replace the source icons; new ?v= so iPhones don't use a cached icon
+icons = sorted((ROOT / "icons").glob("icon-*.png")) if (ROOT / "icons").is_dir() else []
+if icons:
+    iv = "inv" + hashlib.sha1(b"".join(f.read_bytes() for f in icons)).hexdigest()[:8]
+    for f in icons:
+        shutil.copy(f, out / f.name)
+    doc = re.sub(r"(icon-\d+\.png)\?v=[\w-]+", r"\1?v=" + iv, doc)
+    mf = out / "manifest.webmanifest"
+    mf.write_text(re.sub(r"(icon-\d+\.png)\?v=[\w-]+", r"\1?v=" + iv, mf.read_text()))
+
 man = json.loads((out / "manifest.webmanifest").read_text())
 (out / "m").mkdir()
 for i in known:
