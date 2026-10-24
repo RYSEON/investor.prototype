@@ -99,10 +99,12 @@ if key:
 (function(){ var ph=window.posthog; if(!ph||!ph.init) return;
   var N=%s, KN=%s, R=window.__ryseR, B='%s';
   var mode=(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches))?'home_screen_app':'browser';
+  /* cookieless: memory persistence; a personal link is the same person on every open (bootstrap with the ?r= id) */
   ph.init(%s,{api_host:%s,persistence:'memory',person_profiles:'always',autocapture:true,capture_pageview:false,capture_pageleave:false,
+    bootstrap:R?{distinctID:'investor:'+R,isIdentifiedID:true}:undefined,
     disable_session_recording:%s,session_recording:{maskAllInputs:true}});
   ph.register({investor:R||'(no link)',investor_name:R?(KN[R]||R):'(no link)',app_mode:mode,app_build:B});
-  if(R) ph.identify(R,{name:KN[R]||R,investor_id:R,known_link:!!KN[R]});
+  if(R) ph.setPersonProperties({name:KN[R]||R,investor_id:R,known_link:!!KN[R]});
   var cur=null,t0=Date.now(),vis=Date.now(),seen={},nSeen=0;
   function nm(id){ return N[id]||id }
   function screen(id){ if(!id||id===cur) return; var now=Date.now(), p={screen_id:id,screen_name:nm(id)};
