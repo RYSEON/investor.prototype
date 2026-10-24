@@ -264,8 +264,11 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
     else if(b.dataset.to) show(b.dataset.to);
     else if(b.dataset.x) close(b.dataset.x) });
   function open(){ if(!mobile){ g.querySelector('[data-qri]').src='qr/'+R+'.png'; show('desk') } else show('hi');
-    g.classList.add('on'); requestAnimationFrame(function(){ requestAnimationFrame(function(){ g.classList.add('in') }) }); ev('guide_shown',{device:mobile?'phone':'computer'}) }
-  if(document.readyState==='complete') setTimeout(open,1400); else addEventListener('load',function(){ setTimeout(open,1400) });
+    g.classList.add('on'); setTimeout(function(){ g.classList.add('in') },30); ev('guide_shown',{device:mobile?'phone':'computer'}) }
+  /* wait until the loading screen has lifted and an app screen is really on top, then let its entrance play */
+  var t0=Date.now(); (function wait(){ var el=null; try{ el=document.elementFromPoint(innerWidth/2,innerHeight/2) }catch(e){}
+    if(el&&el.closest&&el.closest('section[id]')) return setTimeout(open,900);
+    if(Date.now()-t0<45000) setTimeout(wait,300) })();
 })();
 </script>
 """
