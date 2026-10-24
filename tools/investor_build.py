@@ -230,7 +230,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
   <button class="lk" type="button" data-x="browser">Continue in browser</button></div>
  <div class="pg" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <h2 style="margin-top:22px">Add to Home Screen</h2><p>iPhone · Safari · three taps</p>
-  <div class="st"><div><div class="n">1</div><img src="guide/ios-1.png" alt=""><em>Tap <b>•••</b> next to the address bar</em></div>
+  <div class="st"><div><div class="n">1</div><img src="guide/ios-1.png" alt=""><em>Tap <b>≡</b> on the left of the address bar</em></div>
    <div><div class="n">2</div><img src="guide/ios-2.png" alt=""><em>Tap <b>Share</b>, then <b>Add to Home Screen</b></em></div>
    <div><div class="n">3</div><img src="guide/ios-3.png" alt=""><em>Keep <b>Open as Web App</b> on, tap <b>Add</b></em></div></div>
   <div class="nt">Older iPhone? Tap the Share button at the bottom of Safari, then Add to Home Screen. Then open RYSEON from your Home Screen.</div>
