@@ -1,0 +1,8 @@
+{
+  "source_repo": "SportynX/sportynx-ryse-prototype-",
+  "source_branch": "main",
+  "posthog_key": "",
+  "posthog_host": "https://eu.i.posthog.com",
+  "session_replay": false,
+  "hide_preview_helpers": false
+}

@@ -1,0 +1,74 @@
+# Keeps the investor link in step with the RYSEON prototype.
+# Every 15 minutes (and on demand) it takes the latest app from SportynX/sportynx-ryse-prototype- (main),
+# runs the investor build (personal links + analytics) and publishes it to the gh-pages branch (GitHub Pages).
+# It only publishes when something actually changed, so investors' phones don't reload for nothing.
+name: Sync investor link
+
+on:
+  schedule:
+    - cron: '7,22,37,52 * * * *'
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+
+concurrency:
+  group: investor-sync
+  cancel-in-progress: false
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Get the RYSEON app (source repo, main)
+        uses: actions/checkout@v4
+        with:
+          repository: SportynX/sportynx-ryse-prototype-
+          ref: main
+          path: _source
+          sparse-checkout-cone-mode: false
+          sparse-checkout: |
+            /src/prototype.html
+            /build.py
+            /manifest.webmanifest
+            /robots.txt
+            /icon-*.png
+            /media/
+
+      - name: Anything new?
+        id: check
+        run: |
+          H=$( { (cd _source && find src build.py manifest.webmanifest robots.txt icon-*.png media -type f -print0 2>/dev/null | sort -z | xargs -0 sha256sum); sha256sum config.json investors.json tools/investor_build.py vendor/posthog.js; } | sha256sum | cut -c1-16)
+          OLD=""
+          if git fetch -q --depth 1 origin gh-pages 2>/dev/null; then OLD=$(git show FETCH_HEAD:.source-hash 2>/dev/null || true); fi
+          echo "hash=$H" >> "$GITHUB_OUTPUT"
+          if [ "$H" = "$OLD" ]; then echo "Nothing changed ($H)"; echo "skip=1" >> "$GITHUB_OUTPUT"; fi
+
+      - name: Investor build
+        if: steps.check.outputs.skip != '1'
+        run: |
+          python3 tools/investor_build.py _source _site
+          echo "${{ steps.check.outputs.hash }}" > _site/.source-hash
+
+      - name: Publish to gh-pages
+        if: steps.check.outputs.skip != '1'
+        run: |
+          cd _site
+          git init -q -b gh-pages
+          git add -A
+          git -c user.name="RYSEON investor sync" -c user.email="41898282+github-actions[bot]@users.noreply.github.com" commit -qm "Investor build ${{ steps.check.outputs.hash }}"
+          git push -q -f "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" gh-pages
+
+      - name: Make sure GitHub Pages serves gh-pages
+        if: steps.check.outputs.skip != '1'
+        continue-on-error: true
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          gh api "repos/${{ github.repository }}/pages" >/dev/null 2>&1 || \
+          gh api -X POST "repos/${{ github.repository }}/pages" -f build_type=legacy -f 'source[branch]=gh-pages' -f 'source[path]=/'
