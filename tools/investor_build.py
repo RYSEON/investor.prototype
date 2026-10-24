@@ -250,7 +250,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
 <script>
 (function(){ var NM=__NM__, QR=__QR__, R=window.__ryseR;
   try{ if(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)) return }catch(e){ return }
-  try{ if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){}
+  try{ if(/[?&]guide=1/.test(location.search)) localStorage.removeItem('ryseon-guide'); else if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){}
   var ua=navigator.userAgent||'', mobile=/iPhone|iPad|iPod|Android/i.test(ua)||(navigator.maxTouchPoints>1&&Math.min(screen.width,screen.height)<900);
   if(!mobile&&!(QR&&R&&NM[R])) return;
   var g=document.getElementById('rg'); if(!g) return;
