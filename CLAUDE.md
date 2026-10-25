@@ -24,7 +24,8 @@ What lives here (and only here):
 - `install_guide` + `assets/guide/` — welcome screen in a phone browser (never in the Home Screen app): "Which phone?"
   iPhone / Android, then the three Add to Home Screen steps on one screen; "Continue in browser" is remembered. On a
   computer it shows the investor's QR code (`qr/<id>.png`, generated in the build with `qrcode`). Events: guide_shown,
-  guide_os, guide_closed. Branded QR cards for Ivan (RYSEON-QR-<id>.png, R icon in the middle, error correction H) are
+  guide_os, guide_closed. `?guide=1` shows the welcome again (Ivan testing). Branded QR cards for Ivan are a PDF per investor
+  (RYSEON-QR-<id>.pdf: QR with the R icon, error correction H, plus a tappable "Open RYSEON" button linking the same URL) and a PNG; they are
   made on request and checked with OpenCV's QR decoder before sending.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
