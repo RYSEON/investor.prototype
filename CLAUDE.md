@@ -31,7 +31,7 @@ What lives here (and only here):
   Hold Continue to jump back in." line above Continue plus a gentle fill on the button. The source app's one-time
   Gvardiol test-profile migrations (`ryse-mig-jg`, `ryse-mig-def`) are pre-set here so holding brings back the
   investor's own player. Events: resume_hint_shown, resume_by_hold.
-- `pro_photos` + `assets/pros/` — "I'm already a pro": picking Joško Gvardiol, Luka Modrić or Mateo Kovačić in Find
+- `pro_photos` + `assets/pros/` — "I'm already a pro": picking Joško Gvardiol, Luka Modrić, Mateo Kovačić or Marco Verratti (Al Duhail) in Find
   yourself puts that player's photo in on the photo screen (s06), with "Photo added for preview". Event: pro_photo_added.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 

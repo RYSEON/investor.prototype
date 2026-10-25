@@ -183,7 +183,7 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
         b = f.read_bytes(); shutil.copy(f, out / "pros" / f.name)
         pros[f.stem] = "pros/" + f.name + "?v=" + hashlib.sha1(b).hexdigest()[:8]
     tail = """<script>
-(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic'}, data={};
+(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic','marco verratti':'verratti'}, data={};
   function norm(t){ return String(t||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/\\s+/g,' ').trim() }
   function load(k){ if(data[k]) return data[k]; data[k]=fetch(SRC[k]).then(function(r){return r.blob()}).then(function(b){ return new Promise(function(res){ var fr=new FileReader(); fr.onload=function(){ res(fr.result) }; fr.readAsDataURL(b) }) }); return data[k] }
   Object.keys(SRC).forEach(load);
