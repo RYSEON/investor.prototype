@@ -173,6 +173,50 @@ if cfg.get("preview_photo") and (ROOT / "assets/preview-player.jpg").is_file():
 </script>
 """ % pname + tail
 
+# ---- 3f. "welcome back" hint on the language screen (Ivan, 25 Oct) --------
+# Holding Continue for 2 s on the language screen already jumps to "RYSEON access activated" with the last profile.
+# Investors don't know that, so when a saved player exists we show a quiet hint above Continue and let the button
+# fill gently as a demonstration. The source app's one-time "test profile = Joško Gvardiol" migrations are switched
+# off here, so the hold brings back the investor's own player.
+if cfg.get("resume_hint"):
+    tail = """<style>
+#rg-back{display:flex;align-items:center;gap:10px;margin:0 0 14px;font:500 13.5px/1.4 var(--font-body,Manrope,sans-serif);color:#B8C0CF;opacity:0;transform:translateY(6px);transition:opacity .6s ease,transform .6s ease}
+#rg-back.on{opacity:1;transform:none}#rg-back b{color:#F5F7FB;font-weight:600}
+#rg-back svg{width:22px;height:22px;flex:none}#rg-back circle.p{stroke-dasharray:50.3;stroke-dashoffset:50.3;animation:rgRing 3.6s ease-in-out infinite}
+@keyframes rgRing{0%,12%{stroke-dashoffset:50.3}55%,70%{stroke-dashoffset:0}100%{stroke-dashoffset:50.3}}
+#rg-fill{position:absolute;pointer-events:none;overflow:hidden;opacity:0;transition:opacity .4s}#rg-fill.on{opacity:1}
+#rg-fill i{position:absolute;inset:0;background:rgba(157,184,255,.16);transform:scaleX(0);transform-origin:left;animation:rgFill 3.6s ease-in-out infinite}
+@keyframes rgFill{0%,12%{transform:scaleX(0);opacity:1}55%,70%{transform:scaleX(.62);opacity:1}100%{transform:scaleX(.62);opacity:0}}
+</style>
+<script>
+(function(){
+  try{ if(!localStorage.getItem('ryse-mig-jg')) localStorage.setItem('ryse-mig-jg','1'); if(!localStorage.getItem('ryse-mig-def')) localStorage.setItem('ryse-mig-def','1') }catch(e){}
+  function saved(){ try{ var p=JSON.parse(localStorage.getItem('ryse-last-profile')||'null'); return p&&p.first?p:null }catch(e){ return null } }
+  var L=document.getElementById('sLang'), B=document.getElementById('lang-go'); if(!L||!B) return;
+  var A=B.parentElement, hint=null, fill=null, done=false, shown=false;
+  function ev(n,p){ try{ window.posthog&&window.posthog.capture&&window.posthog.capture(n,p||{}) }catch(e){} }
+  function place(){ if(!fill) return; fill.style.left=B.offsetLeft+'px'; fill.style.top=B.offsetTop+'px'; fill.style.width=B.offsetWidth+'px'; fill.style.height=B.offsetHeight+'px'; fill.style.borderRadius=getComputedStyle(B).borderRadius }
+  function show(){ var p=saved(); if(!p||done||L.classList.contains('is-hidden')) return;
+    if(!hint){ hint=document.createElement('div'); hint.id='rg-back';
+      hint.innerHTML='<svg viewBox="0 0 22 22" fill="none"><circle cx="11" cy="11" r="8" stroke="rgba(255,255,255,.18)" stroke-width="1.6"/><circle class="p" cx="11" cy="11" r="8" stroke="#8FB0FF" stroke-width="1.6" stroke-linecap="round" transform="rotate(-90 11 11)"/></svg><span></span>';
+      A.insertBefore(hint,B); if(getComputedStyle(A).position==='static') A.style.position='relative';
+      fill=document.createElement('div'); fill.id='rg-fill'; fill.innerHTML='<i></i>'; A.appendChild(fill) }
+    hint.lastChild.innerHTML='Welcome back, <b></b>. Hold <b>Continue</b> to jump back in.'; hint.lastChild.querySelector('b').textContent=String(p.first).trim();
+    place(); setTimeout(function(){ hint.classList.add('on'); fill.classList.add('on') },60);
+    if(!shown){ shown=true; ev('resume_hint_shown') } }
+  function hide(){ done=true; if(hint) hint.classList.remove('on'); if(fill) fill.classList.remove('on') }
+  B.addEventListener('pointerdown',function(){ if(hint) hide() },true);
+  addEventListener('resize',place);
+  var prev=window.ryseOnEnter, last=null; window.ryseOnEnter=function(to){ var id=to&&to.id;
+    if(id==='s16'&&last==='sLang') ev('resume_by_hold');
+    if(id==='sLang'){ done=false; setTimeout(show,1600) } else if(hint){ hint.classList.remove('on'); fill.classList.remove('on') }
+    last=id; return prev?prev.apply(this,arguments):undefined };
+  var t0=Date.now(); (function wait(){ var el=null; try{ el=document.elementFromPoint(innerWidth/2,innerHeight/2) }catch(e){}
+    if(el&&el.closest&&el.closest('section[id]')){ last='sLang'; return setTimeout(show,1800) } if(Date.now()-t0<45000) setTimeout(wait,300) })();
+})();
+</script>
+""" + tail
+
 # ---- 3e. welcome / Add to Home Screen guide (Ivan, 24 Oct) -----------------
 # Opened in a phone browser (not yet from the Home Screen): ask iPhone or Android, show the three steps on one screen,
 # and let the investor choose to add it or continue in the browser. On a computer: show their QR code to scan instead.

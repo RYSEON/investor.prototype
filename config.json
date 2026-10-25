@@ -7,5 +7,6 @@
   "hide_preview_helpers": true,
   "preview_photo": true,
   "install_guide": true,
-  "public_url": "https://ryseon.github.io/investor.prototype"
+  "public_url": "https://ryseon.github.io/investor.prototype",
+  "resume_hint": true
 }

@@ -27,6 +27,10 @@ What lives here (and only here):
   guide_os, guide_closed. `?guide=1` shows the welcome again (Ivan testing). Branded QR cards for Ivan are a PDF per investor
   (RYSEON-QR-<id>.pdf: QR with the R icon, error correction H, plus a tappable "Open RYSEON" button linking the same URL) and a PNG; they are
   made on request and checked with OpenCV's QR decoder before sending.
+- `resume_hint` — on the language screen, if a saved player exists (`ryse-last-profile`), a quiet "Welcome back, <name>.
+  Hold Continue to jump back in." line above Continue plus a gentle fill on the button. The source app's one-time
+  Gvardiol test-profile migrations (`ryse-mig-jg`, `ryse-mig-def`) are pre-set here so holding brings back the
+  investor's own player. Events: resume_hint_shown, resume_by_hold.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
 Never put analytics or investor code into the source repo. Talk to Ivan in Croatian; he is not a developer — do all
