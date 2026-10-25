@@ -173,6 +173,36 @@ if cfg.get("preview_photo") and (ROOT / "assets/preview-player.jpg").is_file():
 </script>
 """ % pname + tail
 
+# ---- 3g. pro player photos (Ivan, 25 Oct) ---------------------------------
+# "I'm already a pro" -> Find yourself -> picks Joško Gvardiol, Luka Modrić or Mateo Kovačić: the app then opens the
+# photo screen; we put that player's photo in through the app's own photo input, with "Photo added for preview".
+if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
+    (out / "pros").mkdir(exist_ok=True)
+    pros = {}
+    for f in sorted((ROOT / "assets/pros").glob("*.jpg")):
+        b = f.read_bytes(); shutil.copy(f, out / "pros" / f.name)
+        pros[f.stem] = "pros/" + f.name + "?v=" + hashlib.sha1(b).hexdigest()[:8]
+    tail = """<script>
+(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic'}, data={};
+  function norm(t){ return String(t||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/\\s+/g,' ').trim() }
+  function load(k){ if(data[k]) return data[k]; data[k]=fetch(SRC[k]).then(function(r){return r.blob()}).then(function(b){ return new Promise(function(res){ var fr=new FileReader(); fr.onload=function(){ res(fr.result) }; fr.readAsDataURL(b) }) }); return data[k] }
+  Object.keys(SRC).forEach(load);
+  function note(){ var t=document.getElementById('toast'); if(!t) return;
+    t.innerHTML='<span class="ti"><svg viewBox="0 0 16 16" fill="none" aria-hidden="true"><path d="m3.8 8.3 2.7 2.7 5.7-6" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg></span><span></span>';
+    t.lastChild.textContent='Photo added for preview'; t.classList.remove('on','off'); void t.offsetWidth; t.classList.add('on');
+    setTimeout(function(){ t.classList.remove('on'); t.classList.add('off'); setTimeout(function(){ t.classList.remove('off') },500) },2800) }
+  function put(d){ var P=window.ryseProfile||{}, inp=document.getElementById('photo-lib');
+    try{ if(inp&&window.DataTransfer){ var bin=atob(d.split(',')[1]), u=new Uint8Array(bin.length); for(var i=0;i<bin.length;i++) u[i]=bin.charCodeAt(i);
+      var dt=new DataTransfer(); dt.items.add(new File([u],'player.jpg',{type:'image/jpeg'})); inp.files=dt.files; inp.dispatchEvent(new Event('change',{bubbles:true})); return true } }catch(e){}
+    P.photo=d; try{ localStorage.setItem('ryse-last-profile',JSON.stringify(P)) }catch(e){} return true }
+  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ var r=prev?prev.apply(this,arguments):undefined;
+    try{ var P=window.ryseProfile||{}, k=NAMES[norm((P.first||'')+' '+(P.last||''))];
+      if(to&&to.id==='s06'&&P.found&&k&&!P.photo){ load(k).then(function(d){ setTimeout(function(){ if(!(window.ryseProfile||{}).photo&&put(d)){ setTimeout(note,2600); try{ window.posthog&&window.posthog.capture('pro_photo_added',{player:k}) }catch(e){} } },450) }) } }catch(e){}
+    return r };
+})();
+</script>
+""".replace("__PROS__", json.dumps(pros)) + tail
+
 # ---- 3f. "welcome back" hint on the language screen (Ivan, 25 Oct) --------
 # Holding Continue for 2 s on the language screen already jumps to "RYSEON access activated" with the last profile.
 # Investors don't know that, so when a saved player exists we show a quiet hint above Continue and let the button
