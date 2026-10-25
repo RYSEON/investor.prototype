@@ -1,7 +1,9 @@
 [
-  { "id": "test", "name": "Ivan Ilečić (test)" },
-  { "id": "hrvoje", "name": "Hrvoje" },
-  { "id": "ivan", "name": "Ivan (investor)" },
-  { "id": "marin", "name": "Marin" },
-  { "id": "marko", "name": "Marko" }
+  {"id": "test", "name": "Ivan Ilečić (test)"},
+  {"id": "hrvoje", "name": "Hrvoje"},
+  {"id": "ivan", "name": "Ivan (investor)"},
+  {"id": "marin", "name": "Marin"},
+  {"id": "marko", "name": "Marko"},
+  {"id": "marina", "name": "Marina"},
+  {"id": "juan", "name": "Juan"}
 ]
