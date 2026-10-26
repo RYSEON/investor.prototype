@@ -34,7 +34,7 @@ What lives here (and only here):
 - `pro_photos` + `assets/pros/` — "I'm already a pro": picking Joško Gvardiol, Luka Modrić, Mateo Kovačić or Marco Verratti (Al Duhail) in Find
   yourself puts that player's photo in on the photo screen (s06), with "Photo added for preview". Event: pro_photo_added.
 - `assets/crests/<key>.png` — investor-only club crests for the Home club chip (top right): `milan` (AC Milan, Modrić);
-  `alduhail` (Al Duhail, Verratti) once Ivan sends the logo. Manchester City (Gvardiol, Kovačić) comes from the source app.
+  `alduhail` (Al Duhail, Verratti; logo from Ivan 26 Oct). Manchester City (Gvardiol, Kovačić) comes from the source app.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
 Never put analytics or investor code into the source repo. Talk to Ivan in Croatian; he is not a developer — do all
