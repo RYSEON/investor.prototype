@@ -94,6 +94,9 @@ for m in re.finditer(r'<section\b[^>]*\bid="([A-Za-z0-9_-]+)"[^>]*>(.*?)</sectio
         continue
     h = re.search(r"<h[12]\b[^>]*>(.*?)</h[12]>", m.group(2), re.S)
     t = html.unescape(re.sub(r"\s+", " ", re.sub(r"<[^>]+>", " ", h.group(1))).strip()) if h else ""
+    if not t:
+        al = re.search(r'aria-label="([^"]+)"', m.group(0)[:400])
+        t = al.group(1) if al else ''
     names[sid] = (t[:50] or sid)
 for t, n in {"home": "Home", "progress": "Progress", "ryseon": "RYSEON", "profile": "Profile"}.items():
     names["tab:" + t] = "Tab · " + n
