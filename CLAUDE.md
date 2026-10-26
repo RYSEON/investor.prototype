@@ -36,6 +36,8 @@ What lives here (and only here):
 - `assets/crests/<key>.png` — investor-only club crests for the Home club chip (top right): `milan` (AC Milan, Modrić);
   `alduhail` (Al Duhail, Verratti; logo from Ivan 26 Oct);
   `bayern` (Bayern München, Kane; logo + photo from Ivan 26 Oct). Manchester City (Gvardiol, Kovačić) comes from the source app.
+- Offline copy: the source `build.py` writes `sw.js` (copied here by the build). It serves the app page from the phone's
+  copy (works offline, `?r=` kept) and the auto-update downloads a new build before switching to it.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.
 
 Never put analytics or investor code into the source repo. Talk to Ivan in Croatian; he is not a developer — do all
