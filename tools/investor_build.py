@@ -186,7 +186,7 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
         b = f.read_bytes(); shutil.copy(f, out / "pros" / f.name)
         pros[f.stem] = "pros/" + f.name + "?v=" + hashlib.sha1(b).hexdigest()[:8]
     tail = """<script>
-(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic','marco verratti':'verratti'}, data={};
+(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic','marco verratti':'verratti','harry kane':'kane'}, data={};
   function norm(t){ return String(t||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/\\s+/g,' ').trim() }
   function load(k){ if(data[k]) return data[k]; data[k]=fetch(SRC[k]).then(function(r){return r.blob()}).then(function(b){ return new Promise(function(res){ var fr=new FileReader(); fr.onload=function(){ res(fr.result) }; fr.readAsDataURL(b) }) }); return data[k] }
   Object.keys(SRC).forEach(load);
@@ -209,7 +209,7 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
 # ---- 3h. club crests on Home for the pro players (Ivan, 26 Oct) -----------
 # The Home club chip (top right) shows the club crest. The source app has Manchester City; investor-only crests for
 # the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti).
-CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail"}
+CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail", "bayern": r"bayern m(u|ü|ue)nchen|^(fc )?bayern$"}
 if (ROOT / "assets/crests").is_dir():
     (out / "crests").mkdir(exist_ok=True)
     crests = {}
