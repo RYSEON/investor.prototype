@@ -206,8 +206,31 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
 </script>
 """.replace("__PROS__", json.dumps(pros)) + tail
 
+# ---- 3h. club crests on Home for the pro players (Ivan, 26 Oct) -----------
+# The Home club chip (top right) shows the club crest. The source app has Manchester City; investor-only crests for
+# the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti).
+CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail"}
+if (ROOT / "assets/crests").is_dir():
+    (out / "crests").mkdir(exist_ok=True)
+    crests = {}
+    for f in sorted((ROOT / "assets/crests").glob("*.png")):
+        if f.stem not in CREST_RX: continue
+        b = f.read_bytes(); shutil.copy(f, out / "crests" / f.name)
+        crests[f.stem] = ["crests/" + f.name + "?v=" + hashlib.sha1(b).hexdigest()[:8], CREST_RX[f.stem]]
+    if crests:
+        tail = """<script>
+(function(){ var C=__CRESTS__;
+  function apply(){ try{ var P=window.ryseProfile; if(!P||!P.club||!P.club.name) return; var n=String(P.club.name).trim();
+    for(var k in C){ if(new RegExp(C[k][1],'i').test(n)){ if(P.club.crest!==C[k][0]) P.club.crest=C[k][0];
+      var h=document.getElementById('h-crest'); if(h&&!(h.firstChild&&h.firstChild.tagName==='IMG'&&h.firstChild.getAttribute('src')===C[k][0])){ h.classList.add('img'); h.classList.remove('mc'); h.innerHTML='<img src="'+C[k][0]+'" alt="">' } return } } }catch(e){} }
+  var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ apply(); var r=prev?prev.apply(this,arguments):undefined; apply(); setTimeout(apply,0); return r };
+  apply(); setTimeout(apply,1500);
+})();
+</script>
+""".replace("__CRESTS__", json.dumps(crests)) + tail
+
 # ---- 3f. "welcome back" hint on the language screen (Ivan, 25 Oct) --------
-# Holding Continue for 2 s on the language screen already jumps to "RYSEON access activated" with the last profile.
+# Holding Continue for 3 s on the language screen already jumps to "RYSEON access activated" with the last profile.
 # Investors don't know that, so when a saved player exists we show a quiet hint above Continue and let the button
 # fill gently as a demonstration. The source app's one-time "test profile = Joško Gvardiol" migrations are switched
 # off here, so the hold brings back the investor's own player.
