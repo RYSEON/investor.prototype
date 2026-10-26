@@ -208,7 +208,8 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
 
 # ---- 3h. club crests on Home for the pro players (Ivan, 26 Oct) -----------
 # The Home club chip (top right) shows the club crest. The source app has Manchester City; investor-only crests for
-# the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti).
+# the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti), bayern (Harry Kane).
+# Round crests (bayern) get the source app's 'mc' class: they fill the circle edge to edge (Ivan, 26 Oct).
 CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail", "bayern": r"bayern m(u|ü|ue)nchen|^(fc )?bayern$"}
 if (ROOT / "assets/crests").is_dir():
     (out / "crests").mkdir(exist_ok=True)
@@ -222,7 +223,7 @@ if (ROOT / "assets/crests").is_dir():
 (function(){ var C=__CRESTS__;
   function apply(){ try{ var P=window.ryseProfile; if(!P||!P.club||!P.club.name) return; var n=String(P.club.name).trim();
     for(var k in C){ if(new RegExp(C[k][1],'i').test(n)){ if(P.club.crest!==C[k][0]) P.club.crest=C[k][0];
-      var h=document.getElementById('h-crest'); if(h&&!(h.firstChild&&h.firstChild.tagName==='IMG'&&h.firstChild.getAttribute('src')===C[k][0])){ h.classList.add('img'); h.classList.remove('mc'); h.innerHTML='<img src="'+C[k][0]+'" alt="">' } return } } }catch(e){} }
+      var h=document.getElementById('h-crest'); if(h&&!(h.firstChild&&h.firstChild.tagName==='IMG'&&h.firstChild.getAttribute('src')===C[k][0]&&h.classList.contains('mc')===(k==='bayern'))){ h.classList.add('img'); h.classList.toggle('mc',k==='bayern'); h.innerHTML='<img src="'+C[k][0]+'" alt="">' } return } } }catch(e){} }
   var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ apply(); var r=prev?prev.apply(this,arguments):undefined; apply(); setTimeout(apply,0); return r };
   apply(); setTimeout(apply,1500);
 })();
