@@ -12,6 +12,9 @@ branch (one commit, no history). It publishes only when the source or the invest
 What lives here (and only here):
 - `investors.json` — personal links. `id` is the `?r=` value (lowercase a–z, 0–9, `-`, `_`), `name` is shown in PostHog.
   Each id gets its own manifest (`m/<id>.webmanifest`, start_url `../?r=<id>`) so the link survives "Add to Home Screen".
+- Shared links (`"shared": true` in investors.json, e.g. `deck` = the QR in the Blueprint investor deck): one QR for many
+  people. Each phone keeps a random id (`ryseon-dev` in localStorage) and becomes its own PostHog person
+  `shared:<id>:<device>` with device (model · OS · screen) and PostHog's city/country; dashboard table "Shared QR — every phone".
 - `config.json` — PostHog key (EU, cookieless: memory persistence, no banner), session replay switch, investor tweaks
   (`hide_preview_helpers` hides the "Prototype · preview a state" groups). Ask Ivan before changing any tweak.
 - `tools/investor_build.py` — the investor layer: `?r=` (saved in localStorage, kept through the auto-update reload),

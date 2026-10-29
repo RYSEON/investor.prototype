@@ -8,5 +8,6 @@
   {"id": "juan", "name": "Juan"},
   {"id": "nasser", "name": "Nasser"},
   {"id": "tarek", "name": "Tarek"},
-  {"id": "omar", "name": "Omar"}
+  {"id": "omar", "name": "Omar"},
+  {"id": "deck", "name": "Blueprint deck", "shared": true}
 ]

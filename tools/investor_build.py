@@ -19,10 +19,13 @@ def slug(s):
     return re.sub(r"[^a-z0-9_-]", "", s.lower())[:40]
 
 known = {}
+shared = []   # shared links (one QR for many people, e.g. the Blueprint deck): every phone is its own person in PostHog
 for inv in investors:
     i = slug(inv["id"])
     assert i and i not in known, "bad or duplicate investor id: %r" % inv["id"]
     known[i] = inv.get("name") or i
+    if inv.get("shared"):
+        shared.append(i)
 
 # ---- 1. copy the app -------------------------------------------------------
 if out.exists():
@@ -110,14 +113,19 @@ if key:
     tail = """<script src="ph.js?v=%s"></script>
 <script>
 (function(){ var ph=window.posthog; if(!ph||!ph.init) return;
-  var N=%s, KN=%s, R=window.__ryseR, B='%s';
+  var N=%s, KN=%s, R=window.__ryseR, B='%s', SH=%s;
+  /* shared link: a random id kept on this phone tells phones apart (phone 1, 2, 3… in the dashboard); PostHog adds city and country */
+  var DEV=null; if(R&&SH.indexOf(R)>-1){ try{ DEV=localStorage.getItem('ryseon-dev') }catch(e){} if(!DEV){ DEV=Math.random().toString(36).slice(2,8); try{ localStorage.setItem('ryseon-dev',DEV) }catch(e){} } }
+  var ua=navigator.userAgent||'', dv=/iPhone/.test(ua)?'iPhone':(/iPad/.test(ua)?'iPad':(/Android/.test(ua)?((ua.match(/Android[^;]*;\\s*([^;)]+?)\\s*(Build|\\))/)||[])[1]||'Android'):(/Mac/.test(ua)?'Mac':(/Windows/.test(ua)?'Windows PC':'Other'))));
+  var osv=(ua.match(/OS (\\d+)_(\\d+)/)||[]); if(osv[1]) dv+=' · iOS '+osv[1]+'.'+osv[2]; else { var av=ua.match(/Android (\\d+)/); if(av) dv+=' · Android '+av[1] }
+  dv+=' · '+window.screen.width+'×'+window.screen.height;
   var mode=(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches))?'home_screen_app':'browser';
   /* cookieless: memory persistence; a personal link is the same person on every open (bootstrap with the ?r= id) */
   ph.init(%s,{api_host:%s,persistence:'memory',person_profiles:'always',autocapture:true,capture_pageview:false,capture_pageleave:false,
-    bootstrap:R?{distinctID:'investor:'+R,isIdentifiedID:true}:undefined,
+    bootstrap:R?{distinctID:DEV?'shared:'+R+':'+DEV:'investor:'+R,isIdentifiedID:true}:undefined,
     disable_session_recording:%s,session_recording:{maskAllInputs:true}});
-  ph.register({investor:R||'(no link)',investor_name:R?(KN[R]||R):'(no link)',app_mode:mode,app_build:B});
-  if(R) ph.setPersonProperties({name:KN[R]||R,investor_id:R,known_link:!!KN[R]});
+  ph.register({investor:R||'(no link)',investor_name:R?(KN[R]||R):'(no link)',app_mode:mode,app_build:B,device_id:DEV||undefined,device:dv,shared_link:!!DEV});
+  if(R) ph.setPersonProperties(DEV?{name:(KN[R]||R)+' · '+dv+' · '+DEV,investor_id:R,known_link:true,shared_link:true,device_id:DEV,device:dv}:{name:KN[R]||R,investor_id:R,known_link:!!KN[R]});
   var cur=null,t0=Date.now(),vis=Date.now(),seen={},nSeen=0;
   function nm(id){ return N[id]||id }
   function screen(id){ if(!id||id===cur) return; var now=Date.now(), p={screen_id:id,screen_name:nm(id)};
@@ -137,7 +145,7 @@ if key:
   addEventListener('pagehide',function(){ if(!hidden){ hidden=true; end() } });
 })();
 </script>
-""" % (hashlib.sha1(ph).hexdigest()[:10], json.dumps(names), json.dumps(known), build_id,
+""" % (hashlib.sha1(ph).hexdigest()[:10], json.dumps(names), json.dumps(known), build_id, json.dumps(shared),
        json.dumps(key), json.dumps(cfg.get("posthog_host") or "https://eu.i.posthog.com"),
        "false" if cfg.get("session_replay") else "true")
 
