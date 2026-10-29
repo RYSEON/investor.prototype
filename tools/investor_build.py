@@ -297,6 +297,10 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
             q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=2)
             q.add_data(base + "/?r=" + i); q.make(fit=True)
             q.make_image(fill_color="black", back_color="white").save(out / "qr" / (i + ".png"))
+        # plain link (no ?r=) for computers that open the link without a personal id
+        q = qrcode.QRCode(error_correction=qrcode.constants.ERROR_CORRECT_M, box_size=12, border=2)
+        q.add_data(base + "/"); q.make(fit=True)
+        q.make_image(fill_color="black", back_color="white").save(out / "qr" / "_.png")
         qr_ok = True
     except ImportError:
         print("qrcode not installed - desktop QR skipped")
@@ -304,7 +308,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
     guide_html = """<style>
 #rg{position:fixed;inset:0;z-index:2147483000;display:none;background:rgba(3,5,10,.88);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   font-family:var(--font-body,Manrope,-apple-system,sans-serif);color:#F5F7FB;-webkit-user-select:none;user-select:none;opacity:0;transition:opacity .35s ease}
-#rg.on{display:block}#rg.in{opacity:1}
+#rg.on{display:block}#rg.in{opacity:1}#rg.dk{background:#03050A}
 #rg .w{position:absolute;inset:0;margin:0 auto;max-width:430px;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 34px) 24px calc(env(safe-area-inset-bottom) + 22px);overflow-y:auto}
 #rg .pg{display:none;flex:1;flex-direction:column}#rg .pg.on{display:flex;animation:rgIn .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes rgIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
@@ -352,19 +356,19 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
   <div class="nt">Samsung Internet? Menu at the bottom, then Add page to, Home screen. Then open RYSEON from your Home Screen.</div>
   <button class="pb" type="button" data-x="got">Got it, I'll add it</button><button class="lk" type="button" data-x="browser">Continue in browser</button></div>
  <div class="pg" data-p="desk"><div class="bd">RYSE<span>ON</span></div>
-  <h2 data-h>Welcome.</h2><p>RYSEON is made for your phone. Scan this code with your phone's camera to open your personal preview there.</p>
+  <h2 data-h>Welcome.</h2><p>RYSEON is made for your phone. Scan this code with your phone's camera to open <span data-dp>your personal preview</span> there.</p>
   <div class="qr" data-qr><img alt="QR code" data-qri></div>
-  <button class="pb" type="button" data-x="browser" style="margin-top:auto;background:transparent;color:#F5F7FB;border:1px solid rgba(255,255,255,.16)">Continue on this computer</button></div>
+  <p style="margin-top:auto;font-size:13px;color:#7D8698;text-align:center">RYSEON opens on a phone only.</p></div>
 </div></div>
 <script>
-(function(){ var NM=__NM__, QR=__QR__, R=window.__ryseR;
+(function(){ var NM=__NM__, QR=__QR__, SH=__SH__, R=window.__ryseR;
   try{ if(navigator.standalone||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches)) return }catch(e){ return }
-  try{ if(/[?&]guide=1/.test(location.search)) localStorage.removeItem('ryseon-guide'); else if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){}
   var ua=navigator.userAgent||'', mobile=/iPhone|iPad|iPod|Android/i.test(ua)||(navigator.maxTouchPoints>1&&Math.min(screen.width,screen.height)<900);
-  if(!mobile&&!(QR&&R&&NM[R])) return;
+  /* Computers never get the app (Ivan, 29 Oct): the desktop page with the QR code always shows and cannot be closed */
+  if(mobile){ try{ if(/[?&]guide=1/.test(location.search)) localStorage.removeItem('ryseon-guide'); else if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){} }
   var g=document.getElementById('rg'); if(!g) return;
   function ev(n,p){ try{ window.posthog&&window.posthog.capture&&window.posthog.capture(n,p||{}) }catch(e){} }
-  var nm=R&&NM[R]; g.querySelectorAll('[data-h]').forEach(function(h){ h.textContent=nm?('Welcome, '+nm+'.'):'Welcome.' });
+  var nm=R&&NM[R]&&SH.indexOf(R)<0&&NM[R]; g.querySelectorAll('[data-h]').forEach(function(h){ h.textContent=nm?('Welcome, '+nm+'.'):'Welcome.' });
   function show(p){ g.querySelectorAll('.pg').forEach(function(x){ x.classList.toggle('on',x.dataset.p===p) }); g.querySelector('.w').scrollTop=0 }
   function close(how){ g.classList.remove('in'); setTimeout(function(){ g.classList.remove('on') },350); ev('guide_closed',{action:how});
     if(how==='browser'){ try{ localStorage.setItem('ryseon-guide','browser') }catch(e){} } }
@@ -372,16 +376,18 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
     if(b.dataset.os){ show(b.dataset.os); ev('guide_os',{os:b.dataset.os}) }
     else if(b.dataset.to) show(b.dataset.to);
     else if(b.dataset.x) close(b.dataset.x) });
-  function open(){ if(!mobile){ g.querySelector('[data-qri]').src='qr/'+R+'.png'; show('desk') } else show('hi');
+  function open(){ if(!mobile){ var known=!!(R&&NM[R]); if(QR) g.querySelector('[data-qri]').src='qr/'+(known?R:'_')+'.png'; else g.querySelector('[data-qr]').style.display='none';
+      if(!known||SH.indexOf(R)>-1) g.querySelectorAll('[data-dp]').forEach(function(x){ x.textContent='RYSEON' }); g.classList.add('dk'); show('desk') } else show('hi');
     g.classList.add('on'); setTimeout(function(){ g.classList.add('in') },30); ev('guide_shown',{device:mobile?'phone':'computer'}) }
+  if(!mobile){ open(); return }
   /* wait until the loading screen has lifted and an app screen is really on top, then let its entrance play */
   var t0=Date.now(); (function wait(){ var el=null; try{ el=document.elementFromPoint(innerWidth/2,innerHeight/2) }catch(e){}
-    if(el&&el.closest&&el.closest('section[id]')) return setTimeout(open,900);
+    if(el&&el.closest&&el.closest('section[id]')) return setTimeout(open,mobile?900:0);
     if(Date.now()-t0<45000) setTimeout(wait,300) })();
 })();
 </script>
 """
-    guide_html = guide_html.replace("__NM__", json.dumps(names_short)).replace("__QR__", "true" if qr_ok else "false")
+    guide_html = guide_html.replace("__SH__", json.dumps(shared)).replace("__NM__", json.dumps(names_short)).replace("__QR__", "true" if qr_ok else "false")
     tail = guide_html + tail
 
 doc = replace_once(doc, "\n</body>\n</html>\n", "\n" + tail + "</body>\n</html>\n")
