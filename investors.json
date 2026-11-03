@@ -9,5 +9,8 @@
   {"id": "nasser", "name": "Nasser"},
   {"id": "tarek", "name": "Tarek"},
   {"id": "omar", "name": "Omar"},
+  {"id": "kovacic", "name": "Mateo Kovačić"},
+  {"id": "lovren", "name": "Dejan Lovren"},
+  {"id": "rakitic", "name": "Ivan Rakitić"},
   {"id": "deck", "name": "Blueprint deck", "shared": true}
 ]
