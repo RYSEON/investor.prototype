@@ -355,7 +355,9 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
 #rg .pg.rgi .st{margin-top:10px;flex:1 1 auto;min-height:0}
 #rg .pg.rgi .st>div{display:flex;flex-direction:column;min-height:0}
 #rg .pg.rgi .st .n{flex:none;margin-bottom:8px;width:22px;height:22px}
-#rg .pg.rgi .st img{flex:1 1 auto;min-height:0;width:100%;height:auto;object-fit:contain;object-position:center bottom}
+#rg .pg.rgi .st img{flex:1 1 0;min-height:0;height:0;width:auto;max-width:100%;aspect-ratio:286/591;align-self:center;object-fit:contain;
+  border-radius:14% / 6.8%;background:linear-gradient(160deg,rgba(255,255,255,.10),rgba(255,255,255,.03) 45%,rgba(120,150,255,.06));
+  border:1px solid rgba(255,255,255,.16);box-sizing:border-box;-webkit-backdrop-filter:blur(16px) saturate(140%);backdrop-filter:blur(16px) saturate(140%)}
 #rg .pg.rgi .st em{flex:none;margin-top:8px;font-size:12px;line-height:1.3;min-height:3.9em}
 #rg .pg.rgi .st b{font-size:inherit}
 #rg .pg.rgi .nt{flex:none;margin:8px 0 0;font-size:11.5px;line-height:1.38}
