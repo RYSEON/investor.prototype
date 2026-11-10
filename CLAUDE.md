@@ -10,7 +10,7 @@ link automatically: `.github/workflows/sync.yml` runs every 15 minutes, takes th
 branch (one commit, no history). It publishes only when the source or the investor files changed.
 
 What lives here (and only here):
-- `investors.json` — personal links. `id` is the `?r=` value (lowercase a–z, 0–9, `-`, `_`), `name` is shown in PostHog.
+- `investors.json` — personal links. `id` is the `?r=` value (lowercase a–z, 0–9, `-`, `_`), `name` is shown in PostHog; optional `greet` = how the welcome screen addresses them (e.g. a company, `SQ Capital`), default the first word of `name`.
   Each id gets its own manifest (`m/<id>.webmanifest`, start_url `../?r=<id>`) so the link survives "Add to Home Screen".
 - Shared links (`"shared": true` in investors.json, e.g. `deck` = the QR in the Blueprint investor deck): one QR for many
   people. Each phone keeps a random id (`ryseon-dev` in localStorage) and becomes its own PostHog person
@@ -25,7 +25,7 @@ What lives here (and only here):
 - `assets/preview-player.jpg` + `preview_photo` in config — if a player skips the profile photo (or reaches Home
   without one), this photo is added through the app's own photo input with the message "Photo added for preview".
 - `install_guide` + `assets/guide/` — welcome screen in a phone browser (never in the Home Screen app): "Which phone?"
-  iPhone / Android, then the three Add to Home Screen steps on one screen; "Continue in browser" is remembered. On a
+  iPhone / Android, then "Get RYSEON as an app" (why: own icon, full screen, one tap; then the three steps) with "Got it" and "Not now — continue in browser" always visible at the bottom (Ivan, 10 Nov); "Continue in browser" is remembered. On a
   computer it shows the investor's QR code (`qr/<id>.png`, generated in the build with `qrcode`; `qr/_.png` = plain link
   for computers without a known `?r=`). Computers never get the app (Ivan, 29 Oct): the desktop page cannot be closed, there is no
   "Continue on this computer", and a remembered "Continue in browser" only applies on phones. Shared links say just "Welcome.". Events: guide_shown,

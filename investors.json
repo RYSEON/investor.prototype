@@ -12,6 +12,6 @@
   {"id": "kovacic", "name": "Mateo Kovačić"},
   {"id": "lovren", "name": "Dejan Lovren"},
   {"id": "rakitic", "name": "Ivan Rakitić"},
-  {"id": "sqcapital", "name": "SQ Capital"},
+  {"id": "sqcapital", "name": "SQ Capital", "greet": "SQ Capital"},
   {"id": "deck", "name": "Blueprint deck", "shared": true}
 ]
