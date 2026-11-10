@@ -344,28 +344,40 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
 #rg .sk{margin-top:10px;height:52px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:#0A0D16;color:#F5F7FB;font:600 15.5px var(--font-body,Manrope,sans-serif);cursor:pointer}
 #rg .sk small{display:block;font:500 12px var(--font-body,Manrope,sans-serif);color:#7D8698;margin-top:3px}
 /* install pages fit one screen without scrolling (Ivan, 10 Nov): the step pictures shrink to the space left */
-#rg .pg.ins{min-height:0;overflow:hidden}
-#rg .pg.ins .bk{margin:-12px 0 0 -8px;flex:none}
-#rg .pg.ins h2.it{margin:4px 0 0;font-size:clamp(24px,7vw,29px);flex:none}
-#rg .pg.ins .ip{margin-top:8px;font-size:clamp(13.5px,3.9vw,15.5px);line-height:1.42;flex:none}
-#rg .pg.ins .why{margin-top:12px;flex:none;gap:6px}
-#rg .pg.ins .why div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 2px;font-size:clamp(10.5px,3vw,12px);line-height:1.2;text-align:left;white-space:nowrap;min-width:0;gap:5px}
-#rg .pg.ins .why svg{width:16px;height:16px;margin:0;flex:none}
-#rg .pg.ins .hw{margin-top:14px;flex:none;font-size:11.5px}
-#rg .pg.ins .st{margin-top:10px;flex:1 1 auto;min-height:0}
-#rg .pg.ins .st>div{display:flex;flex-direction:column;min-height:0}
-#rg .pg.ins .st .n{flex:none;margin-bottom:8px;width:22px;height:22px}
-#rg .pg.ins .st img{flex:1 1 auto;min-height:0;width:100%;height:auto;object-fit:contain;object-position:center bottom}
-#rg .pg.ins .st em{flex:none;margin-top:8px;font-size:12px;line-height:1.3;min-height:3.9em}
-#rg .pg.ins .st b{font-size:inherit}
-#rg .pg.ins .nt{flex:none;margin:8px 0 0;font-size:11.5px;line-height:1.38}
-#rg .pg.ins .ac{position:static;flex:none;margin:12px 0 0;padding:0;background:none;flex-direction:row;gap:10px}
-#rg .pg.ins .ac button{flex:1;height:50px;margin:0;border-radius:15px;font-size:14.5px;padding:0 8px}
-#rg .pg.ins .ac .sk{flex:.85}
-@media (max-height:600px){#rg .pg.ins{overflow:visible}#rg .pg.ins .st{flex:none}#rg .pg.ins .st img{flex:none;height:170px}}
+#rg .pg.rgi{min-height:0;overflow:hidden}
+#rg .pg.rgi .bk{margin:-12px 0 0 -8px;flex:none}
+#rg .pg.rgi h2.it{margin:4px 0 0;font-size:clamp(24px,7vw,29px);flex:none}
+#rg .pg.rgi .ip{margin-top:8px;font-size:clamp(13.5px,3.9vw,15.5px);line-height:1.42;flex:none}
+#rg .pg.rgi .why{margin-top:12px;flex:none;gap:6px}
+#rg .pg.rgi .why div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 2px;font-size:clamp(10.5px,3vw,12px);line-height:1.2;text-align:left;white-space:nowrap;min-width:0;gap:5px}
+#rg .pg.rgi .why svg{width:16px;height:16px;margin:0;flex:none}
+#rg .pg.rgi .hw{margin-top:14px;flex:none;font-size:11.5px}
+#rg .pg.rgi .st{margin-top:10px;flex:1 1 auto;min-height:0}
+#rg .pg.rgi .st>div{display:flex;flex-direction:column;min-height:0}
+#rg .pg.rgi .st .n{flex:none;margin-bottom:8px;width:22px;height:22px}
+#rg .pg.rgi .st img{flex:1 1 auto;min-height:0;width:100%;height:auto;object-fit:contain;object-position:center bottom}
+#rg .pg.rgi .st em{flex:none;margin-top:8px;font-size:12px;line-height:1.3;min-height:3.9em}
+#rg .pg.rgi .st b{font-size:inherit}
+#rg .pg.rgi .nt{flex:none;margin:8px 0 0;font-size:11.5px;line-height:1.38}
+#rg .pg.rgi .ac{position:static;flex:none;margin:12px 0 0;padding:0;background:none;flex-direction:row;gap:10px}
+#rg .pg.rgi .ac button{flex:1;height:50px;margin:0;border-radius:15px;font-size:14.5px;padding:0 8px}
+#rg .pg.rgi .ac .sk{flex:.85}
+@media (max-height:600px){#rg .pg.rgi{overflow:visible}#rg .pg.rgi .st{flex:none}#rg .pg.rgi .st img{flex:none;height:170px}}
+/* living background for the welcome pages (Ivan, 10 Nov): the app's drifting blue orb + a second violet-blue light, faint dot grid, slow light sweep */
+#rg{background:#05070D;overflow:hidden}
+#rg canvas.bgc{position:absolute;inset:-6%;width:112%;height:112%;filter:blur(22px);transform:translateZ(0);pointer-events:none}
+#rg .grid{position:absolute;inset:0;pointer-events:none;opacity:.5;background-image:radial-gradient(rgba(160,185,255,.16) 1px,transparent 1.3px);background-size:22px 22px;
+  -webkit-mask-image:radial-gradient(120% 70% at 50% 35%,#000 0%,rgba(0,0,0,.35) 55%,transparent 85%);mask-image:radial-gradient(120% 70% at 50% 35%,#000 0%,rgba(0,0,0,.35) 55%,transparent 85%)}
+#rg .sweep{position:absolute;inset:-20% -60%;pointer-events:none;background:linear-gradient(105deg,transparent 42%,rgba(143,176,255,.07) 50%,transparent 58%);animation:rgSweep 9s ease-in-out infinite}
+@keyframes rgSweep{0%{transform:translateX(-40%)}55%,100%{transform:translateX(40%)}}
+#rg .vig{position:absolute;inset:0;pointer-events:none;background:linear-gradient(180deg,rgba(5,7,13,0) 55%,rgba(5,7,13,.75) 100%)}
+#rg .w{z-index:1}
+#rg .ob{background:rgba(255,255,255,.05);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+#rg .sk{background:rgba(10,13,22,.55)!important;-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px)}
+@media (prefers-reduced-motion:reduce){#rg .sweep{animation:none;opacity:0}}
 #rg .qr{margin:34px auto 0;width:220px;height:220px;border-radius:22px;background:#fff;padding:14px}#rg .qr img{width:100%;height:100%;display:block}
 </style>
-<div id="rg" aria-modal="true" role="dialog"><div class="w">
+<div id="rg" aria-modal="true" role="dialog"><canvas class="bgc" aria-hidden="true"></canvas><div class="grid"></div><div class="sweep"></div><div class="vig"></div><div class="w">
  <div class="pg" data-p="hi"><div class="bd">RYSE<span>ON</span></div>
   <h2 data-h>Welcome.</h2>
   <p>For the best experience, add RYSEON to your Home Screen. It opens full screen, just like the real app.</p>
@@ -373,7 +385,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
   <div class="os"><button class="ob" type="button" data-os="ios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 5h3"/></svg>iPhone</button>
    <button class="ob" type="button" data-os="android"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><circle cx="12" cy="5.2" r=".6" fill="currentColor"/></svg>Android</button></div>
   <button class="sk" type="button" data-x="browser" style="margin-top:14px">Not now — continue in browser</button></div>
- <div class="pg ins" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+ <div class="pg rgi" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <h2 class="it">Get RYSEON as an app</h2><p class="ip">Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
   <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>One-tap open</div></div>
   <div class="hw">How to add it · iPhone · Safari</div>
@@ -382,7 +394,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
    <div><div class="n">3</div><img src="guide/ios-3.png" alt=""><em>Scroll down, tap <b>Add to Home Screen</b>, then <b>Add</b></em></div></div>
   <div class="nt">Older iPhone? Tap Share at the bottom of Safari, then Add to Home Screen.</div>
   <div class="ac"><button class="sk" type="button" data-x="browser">Continue in browser</button><button class="pb" type="button" data-x="got">Got it, I'll add it</button></div></div>
- <div class="pg ins" data-p="android"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+ <div class="pg rgi" data-p="android"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
   <h2 class="it">Get RYSEON as an app</h2><p class="ip">Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
   <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>One-tap open</div></div>
   <div class="hw">How to add it · Android · Chrome</div>
@@ -404,8 +416,25 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
   if(mobile){ try{ if(/[?&]guide=1/.test(location.search)) localStorage.removeItem('ryseon-guide'); else if(localStorage.getItem('ryseon-guide')==='browser') return }catch(e){} }
   var g=document.getElementById('rg'); if(!g) return;
   function ev(n,p){ try{ window.posthog&&window.posthog.capture&&window.posthog.capture(n,p||{}) }catch(e){} }
+  /* background: same drift as the app's orb (slow Lissajous), plus a second light moving the other way; ~30 fps, paused when hidden */
+  var bg=g.querySelector('canvas.bgc'), bx=bg&&bg.getContext&&bg.getContext('2d'), BW=120, BH=240, TAU=Math.PI*2, bt0=performance.now(), blast=0, page='hi', py=0, pyT=0;
+  function bsize(){ var r=bg.getBoundingClientRect(); BH=Math.max(160,Math.round(120*r.height/Math.max(1,r.width))); bg.width=BW; bg.height=BH }
+  function blob(x,y,r,st){ var rg=bx.createRadialGradient(x,y,0,x,y,r); st.forEach(function(q){ rg.addColorStop(q[0],q[1]) }); bx.fillStyle=rg; bx.fillRect(0,0,BW,BH) }
+  function bdraw(now){ var t=(now-bt0)/1000; py+=(pyT-py)*.03;
+    var gr=bx.createLinearGradient(0,0,0,BH); gr.addColorStop(0,'#0B1226'); gr.addColorStop(.45,'#070A14'); gr.addColorStop(1,'#04050A');
+    bx.globalCompositeOperation='source-over'; bx.fillStyle=gr; bx.fillRect(0,0,BW,BH); bx.globalCompositeOperation='lighter';
+    var br=.5+.5*Math.sin(TAU*t/6.5), x=(.5+.30*Math.sin(TAU*t/23)+.08*Math.sin(TAU*t/7.3))*BW, y=(.26+py+.13*Math.sin(TAU*t/17+1.1)+.04*Math.sin(TAU*t/5.9))*BH, R=(.42+.05*br)*BW;
+    blob(x,y,R*2.6,[[0,'rgba(30,70,190,'+(.2+.05*br)+')'],[.5,'rgba(22,52,150,.08)'],[1,'rgba(20,40,120,0)']]);
+    blob(x,y,R,[[0,'rgba(120,160,255,'+(.62+.1*br)+')'],[.35,'rgba(56,108,255,.42)'],[.7,'rgba(36,80,220,.14)'],[1,'rgba(30,70,200,0)']]);
+    var x2=(.5-.34*Math.sin(TAU*t/29+2)+.06*Math.sin(TAU*t/9.1))*BW, y2=(.78-py*.5+.10*Math.sin(TAU*t/19+.4))*BH, R2=(.36+.04*Math.sin(TAU*t/7.7))*BW;
+    blob(x2,y2,R2*1.9,[[0,'rgba(92,70,220,.20)'],[.55,'rgba(60,50,170,.07)'],[1,'rgba(40,30,120,0)']]);
+    blob(x2,y2,R2,[[0,'rgba(140,150,255,.32)'],[.5,'rgba(90,96,240,.14)'],[1,'rgba(70,80,220,0)']]) }
+  function bloop(now){ if(!g.classList.contains('on')) return; requestAnimationFrame(bloop); if(document.hidden||now-blast<33) return; blast=now; bdraw(now) }
+  var still=false; try{ still=matchMedia('(prefers-reduced-motion: reduce)').matches }catch(e){}
+  function bstart(){ if(!bx) return; bsize(); if(still) bdraw(performance.now()+4000); else requestAnimationFrame(bloop) }
+  window.addEventListener('resize',function(){ if(bx) bsize() });
   var nm=R&&NM[R]&&SH.indexOf(R)<0&&NM[R]; g.querySelectorAll('[data-h]').forEach(function(h){ h.textContent=nm?('Welcome, '+nm+'.'):'Welcome.' });
-  function show(p){ g.querySelectorAll('.pg').forEach(function(x){ x.classList.toggle('on',x.dataset.p===p) }); g.querySelector('.w').scrollTop=0 }
+  function show(p){ pyT=(p==='ios'||p==='android')?.05:0; g.querySelectorAll('.pg').forEach(function(x){ x.classList.toggle('on',x.dataset.p===p) }); g.querySelector('.w').scrollTop=0 }
   function close(how){ g.classList.remove('in'); setTimeout(function(){ g.classList.remove('on') },350); ev('guide_closed',{action:how});
     if(how==='browser'){ try{ localStorage.setItem('ryseon-guide','browser') }catch(e){} } }
   g.addEventListener('click',function(e){ var b=e.target.closest('button'); if(!b) return;
@@ -414,7 +443,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
     else if(b.dataset.x) close(b.dataset.x) });
   function open(){ if(!mobile){ var known=!!(R&&NM[R]); if(QR) g.querySelector('[data-qri]').src='qr/'+(known?R:'_')+'.png'; else g.querySelector('[data-qr]').style.display='none';
       if(!known||SH.indexOf(R)>-1) g.querySelectorAll('[data-dp]').forEach(function(x){ x.textContent='RYSEON' }); g.classList.add('dk'); show('desk') } else show('hi');
-    g.classList.add('on'); setTimeout(function(){ g.classList.add('in') },30); ev('guide_shown',{device:mobile?'phone':'computer'}) }
+    g.classList.add('on'); bstart(); setTimeout(function(){ g.classList.add('in') },30); ev('guide_shown',{device:mobile?'phone':'computer'}) }
   if(!mobile){ open(); return }
   /* wait until the loading screen has lifted and an app screen is really on top, then let its entrance play */
   var t0=Date.now(); (function wait(){ var el=null; try{ el=document.elementFromPoint(innerWidth/2,innerHeight/2) }catch(e){}
