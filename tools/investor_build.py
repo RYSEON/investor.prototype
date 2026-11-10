@@ -312,7 +312,7 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
 #rg{position:fixed;inset:0;z-index:2147483000;display:none;background:rgba(3,5,10,.88);-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);
   font-family:var(--font-body,Manrope,-apple-system,sans-serif);color:#F5F7FB;-webkit-user-select:none;user-select:none;opacity:0;transition:opacity .35s ease}
 #rg.on{display:block}#rg.in{opacity:1}#rg.dk{background:#03050A}
-#rg .w{position:absolute;inset:0;margin:0 auto;max-width:430px;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 34px) 24px calc(env(safe-area-inset-bottom) + 22px);overflow-y:auto}
+#rg .w{position:absolute;inset:0;margin:0 auto;max-width:430px;display:flex;flex-direction:column;padding:calc(env(safe-area-inset-top) + 30px) 24px calc(env(safe-area-inset-bottom) + 18px);overflow-y:auto}
 #rg .pg{display:none;flex:1;flex-direction:column}#rg .pg.on{display:flex;animation:rgIn .45s cubic-bezier(.2,.7,.2,1)}
 @keyframes rgIn{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
 #rg .bd{font-family:var(--font-display,Archivo,sans-serif);font-weight:700;font-size:13px;letter-spacing:.26em}#rg .bd span{color:#7D8698}
@@ -343,6 +343,26 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
 #rg .ac .pb{margin-top:0}
 #rg .sk{margin-top:10px;height:52px;border-radius:16px;border:1px solid rgba(255,255,255,.18);background:#0A0D16;color:#F5F7FB;font:600 15.5px var(--font-body,Manrope,sans-serif);cursor:pointer}
 #rg .sk small{display:block;font:500 12px var(--font-body,Manrope,sans-serif);color:#7D8698;margin-top:3px}
+/* install pages fit one screen without scrolling (Ivan, 10 Nov): the step pictures shrink to the space left */
+#rg .pg.ins{min-height:0;overflow:hidden}
+#rg .pg.ins .bk{margin:-12px 0 0 -8px;flex:none}
+#rg .pg.ins h2.it{margin:4px 0 0;font-size:clamp(24px,7vw,29px);flex:none}
+#rg .pg.ins .ip{margin-top:8px;font-size:clamp(13.5px,3.9vw,15.5px);line-height:1.42;flex:none}
+#rg .pg.ins .why{margin-top:12px;flex:none;gap:6px}
+#rg .pg.ins .why div{display:flex;align-items:center;justify-content:center;gap:6px;padding:9px 2px;font-size:clamp(10.5px,3vw,12px);line-height:1.2;text-align:left;white-space:nowrap;min-width:0;gap:5px}
+#rg .pg.ins .why svg{width:16px;height:16px;margin:0;flex:none}
+#rg .pg.ins .hw{margin-top:14px;flex:none;font-size:11.5px}
+#rg .pg.ins .st{margin-top:10px;flex:1 1 auto;min-height:0}
+#rg .pg.ins .st>div{display:flex;flex-direction:column;min-height:0}
+#rg .pg.ins .st .n{flex:none;margin-bottom:8px;width:22px;height:22px}
+#rg .pg.ins .st img{flex:1 1 auto;min-height:0;width:100%;height:auto;object-fit:contain;object-position:center bottom}
+#rg .pg.ins .st em{flex:none;margin-top:8px;font-size:12px;line-height:1.3;min-height:3.9em}
+#rg .pg.ins .st b{font-size:inherit}
+#rg .pg.ins .nt{flex:none;margin:8px 0 0;font-size:11.5px;line-height:1.38}
+#rg .pg.ins .ac{position:static;flex:none;margin:12px 0 0;padding:0;background:none;flex-direction:row;gap:10px}
+#rg .pg.ins .ac button{flex:1;height:50px;margin:0;border-radius:15px;font-size:14.5px;padding:0 8px}
+#rg .pg.ins .ac .sk{flex:.85}
+@media (max-height:600px){#rg .pg.ins{overflow:visible}#rg .pg.ins .st{flex:none}#rg .pg.ins .st img{flex:none;height:170px}}
 #rg .qr{margin:34px auto 0;width:220px;height:220px;border-radius:22px;background:#fff;padding:14px}#rg .qr img{width:100%;height:100%;display:block}
 </style>
 <div id="rg" aria-modal="true" role="dialog"><div class="w">
@@ -353,24 +373,24 @@ if cfg.get("install_guide") and (ROOT / "assets/guide").is_dir():
   <div class="os"><button class="ob" type="button" data-os="ios"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="3"/><path d="M10.5 5h3"/></svg>iPhone</button>
    <button class="ob" type="button" data-os="android"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="6.5" y="2.5" width="11" height="19" rx="2.2"/><circle cx="12" cy="5.2" r=".6" fill="currentColor"/></svg>Android</button></div>
   <button class="sk" type="button" data-x="browser" style="margin-top:14px">Not now — continue in browser</button></div>
- <div class="pg" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <h2 style="margin-top:18px;font-size:30px">Get RYSEON as an app</h2><p>Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
-  <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Its own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen, no browser bars</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Opens in one tap</div></div>
+ <div class="pg ins" data-p="ios"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h2 class="it">Get RYSEON as an app</h2><p class="ip">Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
+  <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>One-tap open</div></div>
   <div class="hw">How to add it · iPhone · Safari</div>
   <div class="st"><div><div class="n">1</div><img src="guide/ios-1.png" alt=""><em>Tap <b>≡</b> on the left of the address bar</em></div>
    <div><div class="n">2</div><img src="guide/ios-2.png" alt=""><em>Tap <b>Share</b></em></div>
    <div><div class="n">3</div><img src="guide/ios-3.png" alt=""><em>Scroll down, tap <b>Add to Home Screen</b>, then <b>Add</b></em></div></div>
-  <div class="nt">Older iPhone? Tap the Share button at the bottom of Safari, then Add to Home Screen. Then open RYSEON from your Home Screen.</div>
-  <div class="ac"><button class="pb" type="button" data-x="got">Got it, I'll add it</button><button class="sk" type="button" data-x="browser">Not now — continue in browser</button></div></div>
- <div class="pg" data-p="android"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
-  <h2 style="margin-top:18px;font-size:30px">Get RYSEON as an app</h2><p>Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
-  <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Its own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen, no browser bars</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>Opens in one tap</div></div>
+  <div class="nt">Older iPhone? Tap Share at the bottom of Safari, then Add to Home Screen.</div>
+  <div class="ac"><button class="sk" type="button" data-x="browser">Continue in browser</button><button class="pb" type="button" data-x="got">Got it, I'll add it</button></div></div>
+ <div class="pg ins" data-p="android"><button class="bk" type="button" data-to="hi" aria-label="Back"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+  <h2 class="it">Get RYSEON as an app</h2><p class="ip">Add it to your Home Screen and this prototype works like a real app on your phone. Optional, about 10 seconds.</p>
+  <div class="why"><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="16" height="16" rx="4.5"/><path d="M9.5 15.5V8.5h3.2a2 2 0 0 1 0 4H9.5m3 0 2.5 3"/></svg>Own app icon</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></svg>Full screen</div><div><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M13 3 5 13.5h6L10 21l8-10.5h-6z"/></svg>One-tap open</div></div>
   <div class="hw">How to add it · Android · Chrome</div>
   <div class="st"><div><div class="n">1</div><img src="guide/android-1.png" alt=""><em>Tap <b>⋮</b> at the top right</em></div>
    <div><div class="n">2</div><img src="guide/android-2.png" alt=""><em>Tap <b>Add to Home screen</b> or <b>Install app</b></em></div>
    <div><div class="n">3</div><img src="guide/android-3.png" alt=""><em>Tap <b>Install</b></em></div></div>
-  <div class="nt">Samsung Internet? Menu at the bottom, then Add page to, Home screen. Then open RYSEON from your Home Screen.</div>
-  <div class="ac"><button class="pb" type="button" data-x="got">Got it, I'll add it</button><button class="sk" type="button" data-x="browser">Not now — continue in browser</button></div></div>
+  <div class="nt">Samsung Internet? Menu at the bottom, then Add page to, Home screen.</div>
+  <div class="ac"><button class="sk" type="button" data-x="browser">Continue in browser</button><button class="pb" type="button" data-x="got">Got it, I'll add it</button></div></div>
  <div class="pg" data-p="desk"><div class="bd">RYSE<span>ON</span></div>
   <h2 data-h>Welcome.</h2><p>RYSEON is made for your phone. Scan this code with your phone's camera to open <span data-dp>your personal preview</span> there.</p>
   <div class="qr" data-qr><img alt="QR code" data-qri></div>

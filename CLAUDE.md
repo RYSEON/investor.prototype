@@ -25,7 +25,7 @@ What lives here (and only here):
 - `assets/preview-player.jpg` + `preview_photo` in config — if a player skips the profile photo (or reaches Home
   without one), this photo is added through the app's own photo input with the message "Photo added for preview".
 - `install_guide` + `assets/guide/` — welcome screen in a phone browser (never in the Home Screen app): "Which phone?"
-  iPhone / Android, then "Get RYSEON as an app" (why: own icon, full screen, one tap; then the three steps) with "Got it" and "Not now — continue in browser" always visible at the bottom (Ivan, 10 Nov); "Continue in browser" is remembered. On a
+  iPhone / Android, then "Get RYSEON as an app" (why: own icon, full screen, one tap; then the three steps) fitting one screen with no scrolling on iPhone 12 Pro Max / 15 / 16 (step pictures shrink to the space left; very small phones scroll), buttons "Continue in browser" + "Got it, I'll add it" in one row (Ivan, 10 Nov); "Continue in browser" is remembered. On a
   computer it shows the investor's QR code (`qr/<id>.png`, generated in the build with `qrcode`; `qr/_.png` = plain link
   for computers without a known `?r=`). Computers never get the app (Ivan, 29 Oct): the desktop page cannot be closed, there is no
   "Continue on this computer", and a remembered "Continue in browser" only applies on phones. Shared links say just "Welcome.". Events: guide_shown,
