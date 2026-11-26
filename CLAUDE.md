@@ -36,11 +36,12 @@ What lives here (and only here):
   Hold Continue to jump back in." line above Continue plus a gentle fill on the button. The source app's one-time
   Gvardiol test-profile migrations (`ryse-mig-jg`, `ryse-mig-def`) are pre-set here so holding brings back the
   investor's own player. Events: resume_hint_shown, resume_by_hold.
-- `pro_photos` + `assets/pros/` — "I'm already a pro": picking Joško Gvardiol, Luka Modrić, Mateo Kovačić, Marco Verratti (Al Duhail) or Harry Kane (Bayern) in Find
+- `pro_photos` + `assets/pros/` — "I'm already a pro": picking Joško Gvardiol, Luka Modrić, Mateo Kovačić, Marco Verratti (Al Duhail), Harry Kane (Bayern) or Jobe Bellingham (Borussia Dortmund, photo from Ivan 26 Nov) in Find
   yourself puts that player's photo in on the photo screen (s06), with "Photo added for preview". Event: pro_photo_added.
 - `assets/crests/<key>.png` — investor-only club crests for the Home club chip (top right): `milan` (AC Milan, Modrić);
   `alduhail` (Al Duhail, Verratti; logo from Ivan 26 Oct);
-  `bayern` (Bayern München, Kane; logo + photo from Ivan 26 Oct). Manchester City (Gvardiol, Kovačić) comes from the source app.
+  `bayern` (Bayern München, Kane; logo + photo from Ivan 26 Oct);
+  `dortmund` (Borussia Dortmund, Bellingham; cut from Ivan's photo of the shirt badge, 26 Nov). Manchester City (Gvardiol, Kovačić) comes from the source app.
 - Offline copy: the source `build.py` writes `sw.js` (copied here by the build). It serves the app page from the phone's
   copy (works offline, `?r=` kept) and the auto-update downloads a new build before switching to it.
 - `vendor/posthog.js` — posthog-js `dist/array.js` (Apache-2.0), served as `ph.js`.

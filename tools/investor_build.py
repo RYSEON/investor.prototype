@@ -197,7 +197,7 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
         b = f.read_bytes(); shutil.copy(f, out / "pros" / f.name)
         pros[f.stem] = "pros/" + f.name + "?v=" + hashlib.sha1(b).hexdigest()[:8]
     tail = """<script>
-(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic','marco verratti':'verratti','harry kane':'kane'}, data={};
+(function(){ var SRC=__PROS__, NAMES={'josko gvardiol':'gvardiol','luka modric':'modric','mateo kovacic':'kovacic','marco verratti':'verratti','harry kane':'kane','jobe bellingham':'bellingham'}, data={};
   function norm(t){ return String(t||'').normalize('NFD').replace(/[\\u0300-\\u036f]/g,'').replace(/đ/gi,'d').toLowerCase().replace(/\\s+/g,' ').trim() }
   function load(k){ if(data[k]) return data[k]; data[k]=fetch(SRC[k]).then(function(r){return r.blob()}).then(function(b){ return new Promise(function(res){ var fr=new FileReader(); fr.onload=function(){ res(fr.result) }; fr.readAsDataURL(b) }) }); return data[k] }
   Object.keys(SRC).forEach(load);
@@ -219,9 +219,9 @@ if cfg.get("pro_photos") and (ROOT / "assets/pros").is_dir():
 
 # ---- 3h. club crests on Home for the pro players (Ivan, 26 Oct) -----------
 # The Home club chip (top right) shows the club crest. The source app has Manchester City; investor-only crests for
-# the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti), bayern (Harry Kane).
+# the other pros' clubs live in assets/crests/<key>.png: milan (Luka Modrić), alduhail (Marco Verratti), bayern (Harry Kane), dortmund (Jobe Bellingham, Ivan 26 Nov).
 # Round crests (bayern) get the source app's 'mc' class: they fill the circle edge to edge (Ivan, 26 Oct).
-CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail", "bayern": r"bayern m(u|ü|ue)nchen|^(fc )?bayern$"}
+CREST_RX = {"milan": r"^(ac )?milan$", "alduhail": r"^al[ -]?duhail", "bayern": r"bayern m(u|ü|ue)nchen|^(fc )?bayern$", "dortmund": r"borussia dortmund|^bvb"}
 if (ROOT / "assets/crests").is_dir():
     (out / "crests").mkdir(exist_ok=True)
     crests = {}
@@ -234,7 +234,7 @@ if (ROOT / "assets/crests").is_dir():
 (function(){ var C=__CRESTS__;
   function apply(){ try{ var P=window.ryseProfile; if(!P||!P.club||!P.club.name) return; var n=String(P.club.name).trim();
     for(var k in C){ if(new RegExp(C[k][1],'i').test(n)){ if(P.club.crest!==C[k][0]) P.club.crest=C[k][0];
-      var h=document.getElementById('h-crest'); if(h&&!(h.firstChild&&h.firstChild.tagName==='IMG'&&h.firstChild.getAttribute('src')===C[k][0]&&h.classList.contains('mc')===(k==='bayern'))){ h.classList.add('img'); h.classList.toggle('mc',k==='bayern'); h.innerHTML='<img src="'+C[k][0]+'" alt="">' } return } } }catch(e){} }
+      var h=document.getElementById('h-crest'); if(h&&!(h.firstChild&&h.firstChild.tagName==='IMG'&&h.firstChild.getAttribute('src')===C[k][0]&&h.classList.contains('mc')===(k==='bayern'||k==='dortmund'))){ h.classList.add('img'); h.classList.toggle('mc',k==='bayern'||k==='dortmund'); h.innerHTML='<img src="'+C[k][0]+'" alt="">' } return } } }catch(e){} }
   var prev=window.ryseOnEnter; window.ryseOnEnter=function(to){ apply(); var r=prev?prev.apply(this,arguments):undefined; apply(); setTimeout(apply,0); return r };
   apply(); setTimeout(apply,1500);
 })();
